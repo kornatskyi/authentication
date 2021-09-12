@@ -1,25 +1,23 @@
-const UserC = require("../models/user.model");
+import User from '../models/user.model'
 
 
 // Create and Save a new User
 exports.create = (req: any, res: any) => {
   // Validate request
   if (!req.body) {
-    
     res.status(400).send({
       message: "Content can not be empty!",
     });
   }
 
   // Create a User
-  const user = new UserC(req.body.email, req.body.name);
+  const user = new User(req.body.email, req.body.name, req.body.password);
 
   // Save User in the database
-  UserC.create(user, (err: Error, data: any) => {
+  User.create(user, (err: Error, data: any) => {
     if (err)
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the User.",
+        message: err.message || "Some error occurred while creating the User.",
       });
     else res.send(data);
   });
@@ -27,11 +25,10 @@ exports.create = (req: any, res: any) => {
 
 // Retrieve all Users from the database.
 exports.findAll = (req: any, res: any) => {
-  UserC.getAll((err: Error, data: any) => {
+  User.getAll((err: Error, data: any) => {
     if (err)
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving users.",
+        message: err.message || "Some error occurred while retrieving users.",
       });
     else res.send(data);
   });
@@ -39,7 +36,7 @@ exports.findAll = (req: any, res: any) => {
 
 // Find a single User with a customerId
 exports.findOne = (req: any, res: any) => {
-  UserC.findById(req.params.customerId, (err: Error, data: any) => {
+  User.findById(req.params.customerId, (err: Error, data: any) => {
     if (err) {
       if (err.message === "not_found") {
         res.status(404).send({
@@ -63,10 +60,9 @@ exports.update = (req: any, res: any) => {
     });
   }
 
-
-  UserC.updateById(
+  User.updateById(
     req.params.customerId,
-    new UserC(req.body.email, req.body.name),
+    new User(req.body.email, req.body.name, req.body.password),
     (err: Error, data: any) => {
       if (err) {
         if (err.message === "not_found") {
@@ -85,7 +81,7 @@ exports.update = (req: any, res: any) => {
 
 // Delete a User with the specified customerId in the request
 exports.delete = (req: any, res: any) => {
-  UserC.remove(req.params.customerId, (err: Error, data: any) => {
+  User.remove(req.params.customerId, (err: Error, data: any) => {
     if (err) {
       if (err.message === "not_found") {
         res.status(404).send({
@@ -102,11 +98,10 @@ exports.delete = (req: any, res: any) => {
 
 // Delete all Users from the database.
 exports.deleteAll = (req: any, res: any) => {
-  UserC.removeAll((err: Error, data: any) => {
+  User.removeAll((err: Error, data: any) => {
     if (err)
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all users.",
+        message: err.message || "Some error occurred while removing all users.",
       });
     else res.send({ message: `All Users were deleted successfully!` });
   });

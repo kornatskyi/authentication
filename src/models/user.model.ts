@@ -3,21 +3,22 @@ const sql = require("./db");
 class User {
   email: string;
   name: string;
+  password: string;
 
-  constructor(email: string, name: string) {
+  constructor(email: string, name: string, password: string) {
     this.email = email;
     this.name = name;
+    this.password = password;
   }
 
   static create = (newUser: User, result: Function) => {
-    
     sql.query("INSERT INTO users SET ?", newUser, (err: Error, res: any) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
         return;
       }
-    
+
       console.log("created user: ", { id: res.insertId, ...newUser });
       result(null, { id: res.insertId, ...newUser });
     });
@@ -114,4 +115,4 @@ class User {
   };
 }
 
-module.exports = User;
+export default User;
