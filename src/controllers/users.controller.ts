@@ -96,6 +96,8 @@ exports.delete = (req: any, res: any) => {
   });
 };
 
+
+
 // Delete all Users from the database.
 exports.deleteAll = (req: any, res: any) => {
   User.removeAll((err: Error, data: any) => {
