@@ -1,5 +1,8 @@
 {
-    "cSpell.words": [
-        "expiression"
-    ]
+  "cSpell.words": ["expiression"],
+  "[search-result]": {
+    "editor.lineNumbers": "off"
+  },
+
+ 
 }

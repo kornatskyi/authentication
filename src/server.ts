@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import User from "./models/user.model";
-import authenticateRoute from "./routes/authenticate.routes";
-import authorizedRoute from "./routes/authorized.routes";
+import authorizationRoutes from "./routes/authorization.routes";
+import authenticationRoutes from "./routes/authentication.routes";
+import registrationRoutes from "./routes/registration.routes";
 
 const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
-const bcrypt = require("bcryptjs");
 
 //figure it out latter
 const csurf = require("csurf");
@@ -38,7 +38,7 @@ app.use(
 );
 // app.use(csurf());
 
-app.user(helmet()); //manage http header security
+app.use(helmet()); //manage http header security
 
 // define a route handler for the default home page
 app.get("/", (req: any, res: any) => {
@@ -54,8 +54,9 @@ app.get("/", (req: any, res: any) => {
 });
 
 require("./routes/user.routes")(app);
-authenticateRoute(app);
-authorizedRoute(app);
+authenticationRoutes(app);
+authorizationRoutes(app);
+registrationRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

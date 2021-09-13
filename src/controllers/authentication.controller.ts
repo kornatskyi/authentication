@@ -1,7 +1,8 @@
 import User from "../models/user.model";
+import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 
-export const login = (req: any, res: any) => {
+export const login = (req: Request, res: Response) => {
   //set cookie expiression
   const hour = 3600000;
   const min = 3600000 / 60;
@@ -29,3 +30,4 @@ export const login = (req: any, res: any) => {
     }
   });
 };
+
