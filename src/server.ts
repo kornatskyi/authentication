@@ -8,6 +8,11 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
 
+//figure it out latter
+const csurf = require("csurf");
+
+const helmet = require("helmet"); //middleware that manage http header security
+
 declare module "express-session" {
   export interface SessionData {
     user: User;
@@ -27,8 +32,13 @@ app.use(
     secret: "Shh, its a secret!",
     resave: false,
     saveUninitialized: true,
+    httpOnly: true, // don't Let JS code access cookies
+    secure: true, // only set cookies over http
   })
 );
+// app.use(csurf());
+
+app.user(helmet()); //manage http header security
 
 // define a route handler for the default home page
 app.get("/", (req: any, res: any) => {
