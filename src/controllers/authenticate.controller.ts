@@ -16,6 +16,9 @@ export const login = (req: any, res: any) => {
       //check password
     } else if (req.body.password !== result.password) {
       res.send("Incorrect password!!!");
-    } else res.send("User " + result.name + " is authorized!");
+    } else {
+      res.cookie("sesionId", result.id);
+      res.send("User " + result.name + " is authorized!");
+    }
   });
 };

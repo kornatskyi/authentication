@@ -1,4 +1,7 @@
 import authenticateRoute from "./routes/authenticate.routes";
+import authorizedRoute from "./routes/authorized.routes";
+
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const bodyParser = require("body-parser");
 
@@ -9,6 +12,7 @@ app.use(
     extended: false,
   })
 );
+app.use(cookieParser());
 
 // define a route handler for the default home page
 app.get("/", (req: any, res: any) => {
@@ -17,6 +21,7 @@ app.get("/", (req: any, res: any) => {
 
 require("./routes/user.routes")(app);
 authenticateRoute(app);
+authorizedRoute(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
