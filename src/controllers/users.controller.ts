@@ -1,5 +1,5 @@
-import User from '../models/user.model'
-
+import User from "../models/user.model";
+import bcrypt from "bcryptjs";
 
 // Create and Save a new User
 exports.create = (req: any, res: any) => {
@@ -10,6 +10,8 @@ exports.create = (req: any, res: any) => {
     });
   }
 
+  const hash = bcrypt.hashSync(req.body.password, 14);
+  req.body.password = hash;
   // Create a User
   const user = new User(req.body.email, req.body.name, req.body.password);
 
@@ -95,8 +97,6 @@ exports.delete = (req: any, res: any) => {
     } else res.send({ message: `User was deleted successfully!` });
   });
 };
-
-
 
 // Delete all Users from the database.
 exports.deleteAll = (req: any, res: any) => {

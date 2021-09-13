@@ -1,6 +1,13 @@
 import User from "../models/user.model";
+import bcrypt from "bcryptjs";
 
 export const login = (req: any, res: any) => {
+  //set cookie expiression
+  const hour = 3600000;
+  const min = 3600000 / 60;
+  const sec = 3600000 / 60 / 60;
+  req.session.cookie.expires = new Date(Date.now() + 10 * sec);
+
   User.findByEmail(req.body.email, (err: Error, result: any) => {
     // check errors from db
     if (err) {
@@ -14,10 +21,10 @@ export const login = (req: any, res: any) => {
         });
       }
       //check password
-    } else if (req.body.password !== result.password) {
+    } else if (!bcrypt.compareSync(req.body.password, result.password)) {
       res.send("Incorrect password!!!");
     } else {
-      res.cookie("sesionId", result.id);
+      req.session.user = new User(result.email, result.name, result.password);
       res.send("User " + result.name + " is authorized!");
     }
   });

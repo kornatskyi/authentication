@@ -1,9 +1,18 @@
+import { NextFunction, Request, Response } from "express";
+import User from "./models/user.model";
 import authenticateRoute from "./routes/authenticate.routes";
 import authorizedRoute from "./routes/authorized.routes";
 
-const cookieParser = require("cookie-parser");
 const express = require("express");
 const bodyParser = require("body-parser");
+const session = require("express-session");
+const bcrypt = require("bcryptjs");
+
+declare module "express-session" {
+  export interface SessionData {
+    user: User;
+  }
+}
 
 const app = express();
 
@@ -12,11 +21,26 @@ app.use(
     extended: false,
   })
 );
-app.use(cookieParser());
+// app.use(cookieParser());
+app.use(
+  session({
+    secret: "Shh, its a secret!",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // define a route handler for the default home page
 app.get("/", (req: any, res: any) => {
-  res.send("Hello world!");
+  console.log(req.session);
+
+  if (req.session.page_views) {
+    req.session.page_views++;
+    res.send("You visited this page " + req.session.page_views + " times");
+  } else {
+    req.session.page_views = 1;
+    res.send("Welcome to this page for the first time!");
+  }
 });
 
 require("./routes/user.routes")(app);
