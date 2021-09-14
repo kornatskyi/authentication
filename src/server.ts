@@ -2,11 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import User from "./models/user.model";
 import authorizationRoutes from "./routes/authorization.routes";
 import authenticationRoutes from "./routes/authentication.routes";
-import registrationRoutes from "./routes/registration.routes";
 
 const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
+require("dotenv").config();
+console.log(process.env.HOST);
 
 //figure it out latter
 const csurf = require("csurf");
@@ -56,7 +57,6 @@ app.get("/", (req: any, res: any) => {
 require("./routes/user.routes")(app);
 authenticationRoutes(app);
 authorizationRoutes(app);
-registrationRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
