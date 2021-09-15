@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 import User from "../models/user.model";
 
 export const authorize = (req: Request, res: Response) => {
-  console.log(req.session.user);
+  console.log("Session ", req.session);
+  console.log("Cookies", req.cookies);
+
   if (req.session.user) {
     const sessionUser = req.session.user;
     User.findByEmail(sessionUser.email, (err: Error, result: any) => {

@@ -8,6 +8,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const cors = require("cors");
+// const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
 
@@ -25,7 +26,7 @@ declare module "express-session" {
 const app = express();
 
 app.use(cors(corsOptions));
-
+// app.use(cookieParser());
 app.use(
   bodyParser.urlencoded({
     extended: false,
@@ -36,7 +37,7 @@ app.use(bodyParser.json()); // <--- Here
 app.use(
   session({
     secret: "Shh, its a secret!",
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     httpOnly: true, // don't Let JS code access cookies
     secure: true, // only set cookies over http
