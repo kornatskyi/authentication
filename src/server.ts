@@ -2,12 +2,14 @@ import { NextFunction, Request, Response } from "express";
 import User from "./models/user.model";
 import authorizationRoutes from "./routes/authorization.routes";
 import authenticationRoutes from "./routes/authentication.routes";
+import corsOptions from "./config/corsOptions";
 
 const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
+const cors = require("cors");
+
 require("dotenv").config();
-console.log(process.env.HOST);
 
 //figure it out latter
 const csurf = require("csurf");
@@ -22,12 +24,15 @@ declare module "express-session" {
 
 const app = express();
 
+app.use(cors(corsOptions));
+
 app.use(
   bodyParser.urlencoded({
     extended: false,
   })
 );
-// app.use(cookieParser());
+app.use(bodyParser.json()); // <--- Here
+
 app.use(
   session({
     secret: "Shh, its a secret!",

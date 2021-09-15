@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import User from "../models/user.model";
 
-export const getPersonalizedData = (req: Request, res: Response) => {
+export const authorize = (req: Request, res: Response) => {
+  console.log(req.session.user);
   if (req.session.user) {
     const sessionUser = req.session.user;
     User.findByEmail(sessionUser.email, (err: Error, result: any) => {
@@ -28,6 +29,7 @@ export const getPersonalizedData = (req: Request, res: Response) => {
       }
     });
   } else {
+    res.status(401);
     res.send("Not authorized");
   }
 };

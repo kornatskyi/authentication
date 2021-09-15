@@ -7,12 +7,16 @@ export const signin = (req: Request, res: Response) => {
   const hour = 3600000;
   const min = 3600000 / 60;
   const sec = 3600000 / 60 / 60;
-  req.session.cookie.expires = new Date(Date.now() + 10 * sec);
+  req.session.cookie.expires = new Date(Date.now() + 200 * sec);
 
-  User.findByEmail(req.body.email, (err: Error, result: any) => {
+  console.log(req.body);
+
+  User.findByEmail(req.body.email, (err: any, result: any) => {
     // check errors from db
+    console.log(err);
+
     if (err) {
-      if (err.message === "not_found") {
+      if (err.kind === "not_found") {
         res.status(404).send({
           message: `Not found User with email ${req.body.email}.`,
         });
@@ -30,4 +34,3 @@ export const signin = (req: Request, res: Response) => {
     }
   });
 };
-
