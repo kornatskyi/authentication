@@ -23,6 +23,7 @@ export const authorize = (req: Request, res: Response) => {
       } else if (sessionUser.password !== result.password) {
         res.send("Incorrect session user password!!!");
       } else {
+        res.status(200);
         res.send(
           "Data only for authorized user : " +
             sessionUser.name +

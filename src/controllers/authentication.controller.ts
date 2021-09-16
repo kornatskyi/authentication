@@ -1,20 +1,21 @@
 import User from "../models/user.model";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
+import expirationDate from "../utils/expirationDate";
 
-export const signin = (req: Request, res: Response) => {
-  //set cookie expiression
-  const hour = 3600000;
-  const min = 3600000 / 60;
-  const sec = 3600000 / 60 / 60;
-  req.session.cookie.expires = new Date(Date.now() + 200 * sec);
+export const signin = (req: Request, res: Response, next: any) => {
+  const [email, password] = [req.body.email, req.body.password];
 
-  console.log(req.body);
+  if (!email || !password) {
+    res.status(403);
+    next(new Error("Not all credentials have been input"));
+    return;
+  }
+
+  //set cookie expiression date
+  req.session.cookie.expires = expirationDate(1);
 
   User.findByEmail(req.body.email, (err: any, result: any) => {
-    // check errors from db
-    console.log(err);
-
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({

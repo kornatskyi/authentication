@@ -14,7 +14,7 @@ class User {
   static create = (newUser: User, result: Function) => {
     sql.query("INSERT INTO users SET ?", newUser, (err: Error, res: any) => {
       if (err) {
-        console.log("error: ", err);
+        console.log("Db error: ", err);
         result(err, null);
         return;
       }
@@ -29,7 +29,7 @@ class User {
       `SELECT * FROM users WHERE id = ${userId}`,
       (err: Error, res: any) => {
         if (err) {
-          console.log("error: ", err);
+          console.log("Db error: ", err);
           result(err, null);
           return;
         }
@@ -46,16 +46,14 @@ class User {
     );
   };
 
-
-
   // find user by email
-  
+
   static findByEmail = (email: string, result: Function) => {
     sql.query(
       `SELECT * FROM users WHERE email = '${email}'`,
       (err: Error, res: any) => {
         if (err) {
-          console.log("error: ", err);
+          console.log("Db error: ", err);
           result(err, null);
           return;
         }
@@ -75,7 +73,7 @@ class User {
   static getAll = (result: Function) => {
     sql.query("SELECT * FROM users", (err: Error, res: any) => {
       if (err) {
-        console.log("error: ", err);
+        console.log("Db error: ", err);
         result(null, err);
         return;
       }
@@ -91,7 +89,7 @@ class User {
       [user.email, user.name, id],
       (err: Error, res: any) => {
         if (err) {
-          console.log("error: ", err);
+          console.log("Db error: ", err);
           result(null, err);
           return;
         }
@@ -111,7 +109,7 @@ class User {
   static remove = (id: number, result: Function) => {
     sql.query("DELETE FROM users WHERE id = ?", id, (err: Error, res: any) => {
       if (err) {
-        console.log("error: ", err);
+        console.log("Db error: ", err);
         result(null, err);
         return;
       }
@@ -130,7 +128,7 @@ class User {
   static removeAll = (result: Function) => {
     sql.query("DELETE FROM users", (err: Error, res: any) => {
       if (err) {
-        console.log("error: ", err);
+        console.log("Db error: ", err);
         result(null, err);
         return;
       }
