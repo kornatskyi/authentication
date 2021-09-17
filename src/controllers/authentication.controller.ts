@@ -12,8 +12,10 @@ export const signin = (req: Request, res: Response, next: any) => {
     return;
   }
 
+  console.log(expirationDate(20));
+
   //set cookie expiression date
-  req.session.cookie.expires = expirationDate(1);
+  req.session.cookie.expires = expirationDate(100);
 
   User.findByEmail(req.body.email, (err: any, result: any) => {
     if (err) {

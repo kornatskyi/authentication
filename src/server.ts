@@ -12,6 +12,8 @@ const cors = require("cors");
 // const cookieParser = require("cookie-parser");
 const helmet = require("helmet"); //middleware that manage http header security]
 const csurf = require("csurf"); //figure it out latter
+const MySQLStore = require("express-mysql-session")(session);
+const connection = require("./models/db");
 
 require("dotenv").config();
 
@@ -20,6 +22,14 @@ declare module "express-session" {
     user: User;
   }
 }
+
+var sessionStore = new MySQLStore(
+  {
+    clearExpired: true,
+    checkExpirationInterval: 90000,
+  } /* session store options */,
+  connection
+);
 
 const app = express();
 
@@ -34,11 +44,13 @@ app.use(
 app.use(bodyParser.json());
 app.use(
   session({
+    key: "some key",
     secret: "Shh, its a secret!",
     resave: true,
     saveUninitialized: true,
     httpOnly: true, // don't Let JS code access cookies
     secure: true, // only set cookies over http
+    store: sessionStore,
   })
 );
 // app.use(csurf());
