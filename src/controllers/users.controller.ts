@@ -21,7 +21,10 @@ exports.create = (req: any, res: any) => {
       res.status(500).send({
         message: err.message || "Some error occurred while creating the User.",
       });
-    else res.status(200);
+    else {
+      res.status(200);
+      res.send("Registered");
+    }
   });
 };
 
@@ -108,3 +111,5 @@ exports.deleteAll = (req: any, res: any) => {
     else res.send({ message: `All Users were deleted successfully!` });
   });
 };
+
+exports.confirmEmail = (req: any, res: any) => {};

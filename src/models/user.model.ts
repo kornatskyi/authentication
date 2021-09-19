@@ -28,6 +28,8 @@ class User {
     sql.query(
       `SELECT * FROM users WHERE id = ${userId}`,
       (err: Error, res: any) => {
+        console.log(res);
+
         if (err) {
           console.log("Db error: ", err);
           result(err, null);
@@ -136,6 +138,28 @@ class User {
       console.log(`deleted ${res.affectedRows} users`);
       result(null, res);
     });
+  };
+
+  static getEmailConfirmationStatus = (email: string, result: any) => {
+    sql.query(
+      `SELECT confirmed FROM users WHERE email = '${email}'`,
+      (err: Error, res: any) => {
+        if (err) {
+          console.log("Db error: ", err);
+          result(err, null);
+          return;
+        }
+
+        if (res.length) {
+          console.log(`Email ${email} confirmation status is: `, res[0]);
+          result(null, res[0]);
+          return;
+        }
+
+        // not found user with the id
+        result({ kind: "not_found" }, null);
+      }
+    );
   };
 }
 

@@ -4,6 +4,8 @@ import authorizationRoutes from "./routes/authorization.routes";
 import authenticationRoutes from "./routes/authentication.routes";
 import corsOptions from "./config/corsOptions";
 import signoutRoutes from "./routes/signout.routes";
+import sendEmail from "./sendEmail";
+import emailConfirmationRoutes from "./routes/emailConfirmation.routes";
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -72,6 +74,7 @@ require("./routes/user.routes")(app);
 authenticationRoutes(app);
 authorizationRoutes(app);
 signoutRoutes(app);
+emailConfirmationRoutes(app);
 
 const errorHandler = (err: Error, req: Request, res: Response, next: any) => {
   if (err) {
