@@ -6,7 +6,7 @@ import User from "../models/user.model";
 //     console.log(err);
 //   });
 
-export function isEmailConfirmed(req: Request, res: Response) {
+export function isConfirmed(req: Request, res: Response) {
   User.getEmailConfirmationStatus(req.body.email, (err: Error, result: any) => {
     if (err) {
       if (err.message === "not_found") {
@@ -28,6 +28,16 @@ export function isEmailConfirmed(req: Request, res: Response) {
         res.status(200);
         res.send(false);
       }
+    }
+  });
+}
+
+export function confirm(req: Request, res: Response) {
+  User.confirmEmail(req.body.email, (err: Error, result: any) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send();
     }
   });
 }

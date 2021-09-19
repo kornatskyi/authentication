@@ -161,6 +161,21 @@ class User {
       }
     );
   };
+
+  static confirmEmail = (email: string, result: any) => {
+    sql.query(
+      `UPDATE users SET confirmed = 1 WHERE email = '${email}'`,
+      (err: Error, res: any) => {
+        if (err) {
+          console.log("Db error: ", err);
+          result(err, null);
+          return;
+        }
+        console.log(res);
+        result(null, res);
+      }
+    );
+  };
 }
 
 export default User;

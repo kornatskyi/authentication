@@ -1,7 +1,7 @@
 import * as emailConfirmation from "../controllers/emailConfirmation.controller";
 
 export default (app: any) => {
-  app.post("/isconfirmed", emailConfirmation.isEmailConfirmed);
+  app.post("/isconfirmed", emailConfirmation.isConfirmed);
 
-  app.get("/confirm");
+  app.post("/confirm", emailConfirmation.confirm);
 };
