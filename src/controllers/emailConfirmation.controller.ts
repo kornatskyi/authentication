@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/user.model";
+const jwt = require("jsonwebtoken");
 
 // //Sending mail with email confirmation link
 // sendEmail().catch((err) => {
@@ -33,7 +34,10 @@ export function isConfirmed(req: Request, res: Response) {
 }
 
 export function confirm(req: Request, res: Response) {
-  User.confirmEmail(req.body.email, (err: Error, result: any) => {
+  const verification = jwt.verify(req.params.token, "secret_key");
+  console.log(verification);
+
+  User.confirmEmail(verification.userEmail, (err: Error, result: any) => {
     if (err) {
       res.status(500).send(err);
     } else {

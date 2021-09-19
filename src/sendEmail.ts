@@ -1,10 +1,15 @@
+import User from "./models/user.model";
+
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
 
 // async..await is not allowed in global scope, must use a wrapper
-export default async function () {
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
-  let testAccount = await nodemailer.createTestAccount();
+export default async function (user: User) {
+  const token = jwt.sign({ userEmail: user.email }, "secret_key", {
+    expiresIn: "1d",
+  });
+
+  const confirmationUrl = `http://localhost:8080/confirm/${token}`;
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
@@ -19,10 +24,10 @@ export default async function () {
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: `"Fred Foo 👻" <${process.env.GMAIL_EMAIL}>`, // sender address
-    to: "atqfeomtdyvxithyvf@pptrvv.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
+    to: user.email, // list of receivers
+    subject: "Simple Auth ✔", // Subject line
+    text: "Confirmation message.", // plain text body
+    html: `<b>Follow this URL to confirm your email address: </b> <a href="${confirmationUrl}">${confirmationUrl}</a>`, // html body
   });
 
   console.log("Message sent: %s", info.messageId);
