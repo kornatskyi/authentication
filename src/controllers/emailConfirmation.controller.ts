@@ -36,7 +36,7 @@ export function isConfirmed(req: Request, res: Response) {
 }
 
 export function confirm(req: Request, res: Response) {
-  const verification = jwt.verify(req.params.token, "secret_key");
+  const verification = jwt.verify(req.params.token, process.env.SECRET_KEY);
   console.log(verification);
 
   User.confirmEmail(verification.userEmail, (err: Error, result: any) => {

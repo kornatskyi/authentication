@@ -6,6 +6,7 @@ import corsOptions from "./config/corsOptions";
 import signoutRoutes from "./routes/signout.routes";
 import sendEmail from "./sendEmail";
 import emailConfirmationRoutes from "./routes/emailConfirmation.routes";
+import resetPasswordRoutes from "./routes/resetPassword.routes";
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -47,7 +48,7 @@ app.use(bodyParser.json());
 app.use(
   session({
     key: "some key",
-    secret: "Shh, its a secret!",
+    secret: process.env.SECRET_KEY,
     resave: true,
     saveUninitialized: true,
     httpOnly: true, // don't Let JS code access cookies
@@ -75,7 +76,7 @@ authenticationRoutes(app);
 authorizationRoutes(app);
 signoutRoutes(app);
 emailConfirmationRoutes(app);
-
+resetPasswordRoutes(app);
 const errorHandler = (err: Error, req: Request, res: Response, next: any) => {
   if (err) {
     res.json(err);
