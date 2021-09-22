@@ -3,15 +3,15 @@ import User from "./models/user.model";
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 
-// create reusable transporter object using the default SMTP transport
-const transporter = nodemailer.createTransport({
-  service: "Gmail",
+// // create reusable transporter object using the default SMTP transport
+// const transporter = nodemailer.createTransport({
+//   service: "Gmail",
 
-  auth: {
-    user: process.env.GMAIL_EMAIL, // generated ethereal user
-    pass: process.env.GMAIL_PASSWORD, // generated ethereal password
-  },
-});
+//   auth: {
+//     user: process.env.GMAIL_EMAIL, // generated ethereal user
+//     pass: process.env.GMAIL_PASSWORD, // generated ethereal password
+//   },
+// });
 
 // async..await is not allowed in global scope, must use a wrapper
 export default async function (user: User) {
@@ -20,6 +20,16 @@ export default async function (user: User) {
   });
 
   const confirmationUrl = `http://localhost:8080/confirm/${token}`;
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    service: "Gmail",
+
+    auth: {
+      user: process.env.GMAIL_EMAIL, // generated ethereal user
+      pass: process.env.GMAIL_PASSWORD, // generated ethereal password
+    },
+  });
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
@@ -44,6 +54,16 @@ export async function sendResetLink(email: string) {
   });
 
   const resetPasswordLink = `${process.env.FRONTEND_URL}/restore-password/${token}`;
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    service: "Gmail",
+
+    auth: {
+      user: process.env.GMAIL_EMAIL, // generated ethereal user
+      pass: process.env.GMAIL_PASSWORD, // generated ethereal password
+    },
+  });
 
   // send mail with defined transport object
   let info = await transporter.sendMail({

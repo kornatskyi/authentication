@@ -108,6 +108,33 @@ class User {
     );
   };
 
+  static updatePasswordByEmail = (
+    email: string,
+    password: string,
+    result: Function
+  ) => {
+    sql.query(
+      "UPDATE users SET password = ? WHERE email = ?",
+      [password, email],
+      (err: Error, res: any) => {
+        if (err) {
+          console.log("Db error: ", err);
+          result(null, err);
+          return;
+        }
+
+        if (res.affectedRows == 0) {
+          // not found user with the email
+          result({ kind: "not_found" }, null);
+          return;
+        }
+
+        console.log("updated user password: ", { email: email });
+        result(null, { email: email });
+      }
+    );
+  };
+
   static remove = (id: number, result: Function) => {
     sql.query("DELETE FROM users WHERE id = ?", id, (err: Error, res: any) => {
       if (err) {
