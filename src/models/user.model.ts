@@ -14,12 +14,12 @@ class User {
   static create = (newUser: User, result: Function) => {
     sql.query("INSERT INTO users SET ?", newUser, (err: Error, res: any) => {
       if (err) {
-        console.log("Db error: ", err);
+        console.log("Db error when creating new user: ", err);
         result(err, null);
         return;
       }
 
-      console.log("created user: ", { id: res.insertId, ...newUser });
+      console.log("Created user: ", { id: res.insertId, ...newUser });
       result(null, { id: res.insertId, ...newUser });
     });
   };

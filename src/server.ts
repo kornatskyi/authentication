@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import User from "./models/user.model";
 import authorizationRoutes from "./routes/authorization.routes";
 import authenticationRoutes from "./routes/authentication.routes";
-import corsOptions from "./config/corsOptions";
+import corsOptions from "./config/cors.config";
 import signoutRoutes from "./routes/signout.routes";
 import sendEmail from "./sendEmail";
 import emailConfirmationRoutes from "./routes/emailConfirmation.routes";
