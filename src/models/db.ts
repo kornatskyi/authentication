@@ -1,12 +1,11 @@
 const mysql = require("mysql");
-const dbConfig = require("../config/db.config");
 
 const connection = mysql.createPool({
-  host: dbConfig.HOST,
-  port: dbConfig.PORT,
-  user: dbConfig.USER_NAME,
-  password: dbConfig.USER_PASSWORD,
-  database: dbConfig.DATABASE,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER_NAME,
+  password: process.env.DB_USER_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 module.exports = connection;
