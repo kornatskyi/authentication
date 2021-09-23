@@ -3,7 +3,9 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import expirationDate from "../utils/expirationDate";
 import sendEmail from "../sendEmail";
+import { MysqlError } from "mysql";
 
+// expected body = {email: string, password: string}
 export const signIn = (req: Request, res: Response, next: any) => {
   // Validate request, check if all required fields exist
   if (!req.body || !req.body.email || !req.body.password) {
@@ -21,15 +23,16 @@ export const signIn = (req: Request, res: Response, next: any) => {
     //Handle database errors
     if (err) {
       if (err.kind === "not_found") {
-        res.status(404).send(new Error(`Not found User with ${email} email`));
+        res.status(404);
+        next(new Error(`Not found User with ${email} email`));
       } else {
-        res
-          .status(500)
-          .send(new Error(`Error retrieving User with ${email} email`));
+        res.status(500);
+        next(new Error(`Error retrieving User with ${email} email`));
       }
       //check password
     } else if (!bcrypt.compareSync(password, result.password)) {
-      res.status(401).send("Incorrect password!!!");
+      res.status(401);
+      next(new Error("Incorrect password!!!"));
     } else {
       //If user authorized successfully create new session with his credentials
       req.session.user = new User(result.email, result.name, result.password);
@@ -38,11 +41,11 @@ export const signIn = (req: Request, res: Response, next: any) => {
   });
 };
 
-//Expects {email: string,name: string, password: string} as a request body
+// expected body = {email: string, name: string password: string}
 export const signUp = (req: Request, res: Response, next: any) => {
   // Validate request, check if all required fields exist
   if (!req.body || !req.body.email || !req.body.password || !req.body.name) {
-    res.status(400).send(new Error("Empty credentials"));
+    res.status(400).send("Empty credentials");
   }
 
   //Encrypt user password to store in database
@@ -53,12 +56,16 @@ export const signUp = (req: Request, res: Response, next: any) => {
   const user = new User(req.body.email, req.body.name, req.body.password);
 
   // Create new user in the database
-  User.create(user, (err: Error, data: any) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the User.",
-      });
-    else {
+  User.create(user, (err: MysqlError, data: any) => {
+    if (err) {
+      if (err.code === "ER_DUP_ENTRY") {
+        res.status(500);
+        next(new Error("User with this email exists"));
+      } else {
+        res.status(500);
+        next(new Error("Some error occurred while creating the User"));
+      }
+    } else {
       //Send confirmation link to provided email address
       sendEmail(user)
         .then(() => {

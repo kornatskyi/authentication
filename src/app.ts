@@ -72,9 +72,11 @@ signoutRoutes(app);
 emailConfirmationRoutes(app);
 resetPasswordRoutes(app);
 const errorHandler = (err: Error, req: Request, res: Response, next: any) => {
+  console.log(err.message);
+
   if (err) {
-    res.json(err);
-    res.send(err.message);
+    res.statusMessage = err.message;
+    res.send();
   }
 };
 app.use(errorHandler);

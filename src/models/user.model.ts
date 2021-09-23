@@ -56,6 +56,7 @@ class User {
       (err: Error, res: any) => {
         if (err) {
           console.log("Db error: ", err);
+
           result(err, null);
           return;
         }
