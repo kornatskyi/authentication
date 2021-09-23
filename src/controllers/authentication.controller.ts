@@ -5,41 +5,40 @@ import expirationDate from "../utils/expirationDate";
 import sendEmail from "../sendEmail";
 
 export const signIn = (req: Request, res: Response, next: any) => {
-  const [email, password] = [req.body.email, req.body.password];
-
-  if (!email || !password) {
-    res.status(403);
-    next(new Error("Not all credentials have been input"));
+  // Validate request, check if all required fields exist
+  if (!req.body || !req.body.email || !req.body.password) {
+    res.status(400);
+    next(new Error("Empty credentials"));
     return;
   }
-
-  console.log(expirationDate(20));
+  const [email, password] = [req.body.email, req.body.password];
 
   //set cookie expiression date
   req.session.cookie.expires = expirationDate(100);
 
-  User.findByEmail(req.body.email, (err: any, result: any) => {
+  //Search for user with provided email address in the database
+  User.findByEmail(email, (err: any, result: any) => {
+    //Handle database errors
     if (err) {
       if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found User with email ${req.body.email}.`,
-        });
+        res.status(404).send(new Error(`Not found User with ${email} email`));
       } else {
-        res.status(500).send({
-          message: "Error retrieving User with email " + req.body.email,
-        });
+        res
+          .status(500)
+          .send(new Error(`Error retrieving User with ${email} email`));
       }
       //check password
-    } else if (!bcrypt.compareSync(req.body.password, result.password)) {
-      res.send("Incorrect password!!!");
+    } else if (!bcrypt.compareSync(password, result.password)) {
+      res.status(401).send("Incorrect password!!!");
     } else {
+      //If user authorized successfully create new session with his credentials
       req.session.user = new User(result.email, result.name, result.password);
-      res.send("User " + result.name + " is authorized!");
+      res.status(200).send("User " + result.name + " is authorized!");
     }
   });
 };
 
-//Expects {email: string,  name: string, password: string}
+//Expects {email: string,name: string, password: string} as a request body
 export const signUp = (req: Request, res: Response, next: any) => {
   // Validate request, check if all required fields exist
   if (!req.body || !req.body.email || !req.body.password || !req.body.name) {
