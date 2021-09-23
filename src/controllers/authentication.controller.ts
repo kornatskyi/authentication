@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import expirationDate from "../utils/expirationDate";
 import sendEmail from "../sendEmail";
 
-export const signin = (req: Request, res: Response, next: any) => {
+export const signIn = (req: Request, res: Response, next: any) => {
   const [email, password] = [req.body.email, req.body.password];
 
   if (!email || !password) {
@@ -41,28 +41,38 @@ export const signin = (req: Request, res: Response, next: any) => {
 
 //Expects {email: string,  name: string, password: string}
 export const signUp = (req: Request, res: Response, next: any) => {
-  // Validate request
-  if (!req.body) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
+  // Validate request, check if all required fields exist
+  if (!req.body || !req.body.email || !req.body.password || !req.body.name) {
+    res.status(400).send(new Error("Empty credentials"));
   }
 
+  //Encrypt user password to store in database
   const hash = bcrypt.hashSync(req.body.password, 14);
   req.body.password = hash;
-  // Create a User
+
+  // Create a User object
   const user = new User(req.body.email, req.body.name, req.body.password);
 
-  // Save User in the database
+  // Create new user in the database
   User.create(user, (err: Error, data: any) => {
     if (err)
       res.status(500).send({
         message: err.message || "Some error occurred while creating the User.",
       });
     else {
-      sendEmail(user);
-      res.status(200);
-      res.send("Registered");
+      //Send confirmation link to provided email address
+      sendEmail(user)
+        .then(() => {
+          res.status(201);
+          res.send("Please confirm you email address");
+        })
+        .catch(() => {
+          res
+            .status(200)
+            .send(
+              "User was created but can't send confirmation link to the given email."
+            );
+        });
     }
   });
 };
