@@ -39,6 +39,7 @@ export const signin = (req: Request, res: Response, next: any) => {
   });
 };
 
+//Expects {email: string,  name: string, password: string}
 export const signUp = (req: Request, res: Response, next: any) => {
   // Validate request
   if (!req.body) {

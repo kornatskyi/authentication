@@ -1,6 +1,5 @@
-module.exports = (app: any) => {
-  const users = require("../controllers/users.controller");
-
+import * as users from "../controllers/users.controller";
+export default (app: any) => {
   // Create a new User
   app.post("/users", users.create);
 
@@ -14,7 +13,7 @@ module.exports = (app: any) => {
   app.put("/users/:customerId", users.update);
 
   // Delete a User with customerId
-  app.delete("/users/:customerId", users.delete);
+  app.delete("/users/:customerId", users.deleteById);
 
   // Create a new User
   app.delete("/users", users.deleteAll);

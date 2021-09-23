@@ -1,4 +1,4 @@
-const sql = require("./db");
+import sql from "./db";
 
 class User {
   email: string;
@@ -74,6 +74,8 @@ class User {
 
   static getAll = (result: Function) => {
     sql.query("SELECT * FROM users", (err: Error, res: any) => {
+      console.log("debug");
+
       if (err) {
         console.log("Db error: ", err);
         result(null, err);

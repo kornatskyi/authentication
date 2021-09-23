@@ -2,7 +2,7 @@ import User from "../models/user.model";
 import bcrypt from "bcryptjs";
 
 // Create and Save a new User
-exports.create = (req: any, res: any) => {
+export const create = (req: any, res: any) => {
   // Validate request
   if (!req.body) {
     res.status(400).send({
@@ -29,7 +29,7 @@ exports.create = (req: any, res: any) => {
 };
 
 // Retrieve all Users from the database.
-exports.findAll = (req: any, res: any) => {
+export const findAll = (req: any, res: any) => {
   User.getAll((err: Error, data: any) => {
     if (err)
       res.status(500).send({
@@ -40,7 +40,7 @@ exports.findAll = (req: any, res: any) => {
 };
 
 // Find a single User with a customerId
-exports.findOne = (req: any, res: any) => {
+export const findOne = (req: any, res: any) => {
   User.findById(req.params.customerId, (err: Error, data: any) => {
     if (err) {
       if (err.message === "not_found") {
@@ -57,7 +57,7 @@ exports.findOne = (req: any, res: any) => {
 };
 
 // Update a User identified by the customerId in the request
-exports.update = (req: any, res: any) => {
+export const update = (req: any, res: any) => {
   // Validate Request
   if (!req.body) {
     res.status(400).send({
@@ -85,7 +85,7 @@ exports.update = (req: any, res: any) => {
 };
 
 // Delete a User with the specified customerId in the request
-exports.delete = (req: any, res: any) => {
+export const deleteById = (req: any, res: any) => {
   User.remove(req.params.customerId, (err: Error, data: any) => {
     if (err) {
       if (err.message === "not_found") {
@@ -102,7 +102,7 @@ exports.delete = (req: any, res: any) => {
 };
 
 // Delete all Users from the database.
-exports.deleteAll = (req: any, res: any) => {
+export const deleteAll = (req: any, res: any) => {
   User.removeAll((err: Error, data: any) => {
     if (err)
       res.status(500).send({
@@ -112,4 +112,4 @@ exports.deleteAll = (req: any, res: any) => {
   });
 };
 
-exports.confirmEmail = (req: any, res: any) => {};
+export const confirmEmail = (req: any, res: any) => {};

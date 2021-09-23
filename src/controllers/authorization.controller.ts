@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
 import User from "../models/user.model";
+declare module "express-session" {
+  export interface SessionData {
+    user: User;
+  }
+}
 
 export const authorize = (req: Request, res: Response) => {
   console.log("Session ", req.session);

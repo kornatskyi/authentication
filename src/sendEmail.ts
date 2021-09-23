@@ -2,6 +2,7 @@ import User from "./models/user.model";
 
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 
 // // create reusable transporter object using the default SMTP transport
 // const transporter = nodemailer.createTransport({
@@ -12,6 +13,8 @@ const jwt = require("jsonwebtoken");
 //     pass: process.env.GMAIL_PASSWORD, // generated ethereal password
 //   },
 // });
+
+//TODO: Error handling if email is wrong.
 
 // async..await is not allowed in global scope, must use a wrapper
 export default async function (user: User) {
