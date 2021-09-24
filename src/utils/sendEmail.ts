@@ -1,4 +1,4 @@
-import User from "./models/user.model";
+import User from "../models/user.model";
 
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");

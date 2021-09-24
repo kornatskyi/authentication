@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../models/user.model";
-import sendEmail from "../sendEmail";
+import sendEmail from "../utils/sendEmail";
 const jwt = require("jsonwebtoken");
 
 export const isConfirmed = (req: Request, res: Response) => {
@@ -51,7 +51,9 @@ export const sendConfirmationLink = (
   sendEmail(user)
     .then(() => {
       res.status(200);
-      res.send("Please confirm you email address");
+      res.send(
+        "We sent you a mail with instructions on how to confirm your email address. It may take a couple of minutes"
+      );
     })
     .catch((err) => {
       next(new Error(err.message));

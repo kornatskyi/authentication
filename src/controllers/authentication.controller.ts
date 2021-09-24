@@ -2,7 +2,7 @@ import User from "../models/user.model";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import expirationDate from "../utils/expirationDate";
-import sendEmail from "../sendEmail";
+import sendEmail from "../utils/sendEmail";
 import { MysqlError } from "mysql";
 
 // expected body = {email: string, password: string}
@@ -70,7 +70,9 @@ export const signUp = (req: Request, res: Response, next: any) => {
       sendEmail(user)
         .then(() => {
           res.status(201);
-          res.send("Please confirm you email address");
+          res.send(
+            "We sent you a mail with instructions on how to confirm your email address. It can take some time for a mail to come."
+          );
         })
         .catch(() => {
           res
