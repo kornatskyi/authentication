@@ -1,3 +1,4 @@
+import { MysqlError } from "mysql";
 import sql from "./db";
 
 class User {
@@ -196,6 +197,21 @@ class User {
     sql.query(
       `UPDATE users SET confirmed = 1 WHERE email = '${email}'`,
       (err: Error, res: any) => {
+        if (err) {
+          console.log("Db error: ", err);
+          result(err, null);
+          return;
+        }
+        console.log(res);
+        result(null, res);
+      }
+    );
+  };
+
+  static updateByEmail = (email: string, user: User, result: any) => {
+    sql.query(
+      `UPDATE users SET email = '${user.email}', name = '${user.name}', password = '${user.password}' WHERE email = '${email}'`,
+      (err: MysqlError, res: any) => {
         if (err) {
           console.log("Db error: ", err);
           result(err, null);

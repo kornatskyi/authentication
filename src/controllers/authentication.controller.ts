@@ -18,7 +18,7 @@ export const signIn = (req: Request, res: Response, next: any) => {
   //set cookie expiression date
   req.session.cookie.expires = expirationDate(100);
 
-  //Search for user with provided email address in the database
+  //Search for user with the provided email address in the database
   User.findByEmail(email, (err: any, result: any) => {
     //Handle database errors
     if (err) {
