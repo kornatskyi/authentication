@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import User from "../models/user.model";
+import sendEmail from "../sendEmail";
 const jwt = require("jsonwebtoken");
 
-export function isConfirmed(req: Request, res: Response) {
+export const isConfirmed = (req: Request, res: Response) => {
   if (req.session.user) {
     User.getEmailConfirmationStatus(
       req.session.user.email,
@@ -33,9 +34,32 @@ export function isConfirmed(req: Request, res: Response) {
   } else {
     res.status(401).send("Session doesn't exist");
   }
-}
+};
 
-export function confirm(req: Request, res: Response) {
+export const sendConfirmationLink = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.session.user) {
+    res.status(401);
+    next(new Error("Unauthorized for this request"));
+    return;
+  }
+  const user = req.session.user;
+
+  sendEmail(user)
+    .then(() => {
+      res.status(200);
+      res.send("Please confirm you email address");
+    })
+    .catch((err) => {
+      next(new Error(err.message));
+    });
+  return;
+};
+
+export const confirm = (req: Request, res: Response) => {
   const verification = jwt.verify(req.params.token, process.env.SECRET_KEY);
   console.log(verification);
 
@@ -46,4 +70,4 @@ export function confirm(req: Request, res: Response) {
       res.status(200).send();
     }
   });
-}
+};

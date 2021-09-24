@@ -158,6 +158,29 @@ class User {
     });
   };
 
+  static removeByEmail = (email: string, result: Function) => {
+    sql.query(
+      "DELETE FROM users WHERE email = ?",
+      email,
+      (err: Error, res: any) => {
+        if (err) {
+          console.log("Db error: ", err);
+          result(null, err);
+          return;
+        }
+
+        if (res.affectedRows == 0) {
+          // not found User with the id
+          result({ kind: "not_found" }, null);
+          return;
+        }
+
+        console.log("deleted user with email: ", email);
+        result(null, res);
+      }
+    );
+  };
+
   static removeAll = (result: Function) => {
     sql.query("DELETE FROM users", (err: Error, res: any) => {
       if (err) {

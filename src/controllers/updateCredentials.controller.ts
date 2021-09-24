@@ -40,7 +40,8 @@ export const updateCredentials = (req: any, res: any, next: NextFunction) => {
             )
           );
         }
-      } else res.status(200).send("User credentials successfully updated");
+      } else
+        res.status(200).send("User credentials have been successfully updated");
     }
   );
 };

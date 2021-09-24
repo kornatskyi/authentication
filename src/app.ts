@@ -18,6 +18,7 @@ import resetPasswordRoutes from "./routes/resetPassword.routes";
 import connection from "./models/db";
 import userRoutes from "./routes/user.routes";
 import updateCredentialsRoutes from "./routes/updateCredentials.routes";
+import deleteUserRoutes from "./routes/deleteUser.routes";
 
 var sessionStore = new MySQLStore(
   {
@@ -73,6 +74,8 @@ signoutRoutes(app);
 emailConfirmationRoutes(app);
 resetPasswordRoutes(app);
 updateCredentialsRoutes(app);
+deleteUserRoutes(app);
+
 const errorHandler = (err: Error, req: Request, res: Response, next: any) => {
   if (err) {
     res.statusMessage = err.message || "Undefined status message";
