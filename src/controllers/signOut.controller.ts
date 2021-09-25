@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-export const signout = (req: Request, res: Response, next: any) => {
+export const signOut = (req: Request, res: Response, next: any) => {
   console.log(req.session);
 
   req.session.destroy(() => {

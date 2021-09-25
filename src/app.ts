@@ -12,7 +12,7 @@ import { Request, Response } from "express";
 import authorizationRoutes from "./routes/authorization.routes";
 import authenticationRoutes from "./routes/authentication.routes";
 import corsOptions from "./config/cors.config";
-import signoutRoutes from "./routes/signout.routes";
+import signOutRoutes from "./routes/signOut.routes";
 import emailConfirmationRoutes from "./routes/emailConfirmation.routes";
 import resetPasswordRoutes from "./routes/resetPassword.routes";
 import connection from "./models/db";
@@ -70,7 +70,7 @@ app.get("/", (req: any, res: any, next: any) => {
 userRoutes(app);
 authenticationRoutes(app);
 authorizationRoutes(app);
-signoutRoutes(app);
+signOutRoutes(app);
 emailConfirmationRoutes(app);
 resetPasswordRoutes(app);
 updateCredentialsRoutes(app);

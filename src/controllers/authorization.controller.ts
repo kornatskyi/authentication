@@ -7,9 +7,6 @@ declare module "express-session" {
 }
 
 export const authorize = (req: Request, res: Response) => {
-  console.log("Session ", req.session);
-  console.log("Cookies", req.cookies);
-
   if (req.session.user) {
     const sessionUser = req.session.user;
     User.findByEmail(sessionUser.email, (err: Error, result: any) => {
@@ -29,11 +26,11 @@ export const authorize = (req: Request, res: Response) => {
         res.send("Incorrect session user password!!!");
       } else {
         res.status(200);
-        res.send(
-          "Data only for authorized user : " +
-            sessionUser.name +
-            " is authorized!"
-        );
+        //Send not privet user credentials back to the client
+        res.send({
+          email: req.session.user?.email,
+          name: req.session.user?.name,
+        });
       }
     });
   } else {
