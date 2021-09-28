@@ -56,8 +56,6 @@ app.use(helmet()); //manage http header security
 
 // define a route handler for the default home page
 app.get("/", (req: any, res: any, next: any) => {
-  console.log("ehrkweh");
-
   if (req.session.page_views) {
     req.session.page_views++;
     res.send("You visited this page " + req.session.page_views + " times");

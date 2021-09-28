@@ -3,6 +3,6 @@
   "[search-result]": {
     "editor.lineNumbers": "off"
   },
-
- 
+  "appService.defaultWebAppToDeploy": "/subscriptions/d7f9c562-f606-4520-8dd0-315eb0acabc1/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/authentication-node",
+  "appService.deploySubpath": "."
 }
