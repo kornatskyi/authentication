@@ -11,3 +11,7 @@ My implementation of Authorization.
 ## How to use
 
 1. Clone package
+2. Install all npm dependency with
+`npm i`
+3. Run 
+`npm run`
