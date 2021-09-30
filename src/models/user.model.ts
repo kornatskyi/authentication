@@ -74,6 +74,8 @@ class User {
   };
 
   static getAll = (result: Function) => {
+    console.log("get all");
+
     sql.query("SELECT * FROM users", (err: Error, res: any) => {
       console.log("debug");
 
