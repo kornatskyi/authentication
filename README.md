@@ -7,3 +7,7 @@ My implementation of Authorization.
   - Express.js
   - MySql
   - TypeScript
+
+## How to use
+
+1. Clone package
