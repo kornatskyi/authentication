@@ -48,7 +48,6 @@ app.use(helmet()); //manage http header security
 /* ----- End of a middleware ----- */
 // define a route handler for the default home page
 app.get("/", (req, res, next) => {
-    console.log("ehrkweh");
     if (req.session.page_views) {
         req.session.page_views++;
         res.send("You visited this page " + req.session.page_views + " times");
@@ -68,6 +67,9 @@ app.get("/", (req, res, next) => {
 (0, deleteUser_routes_1.default)(app);
 const errorHandler = (err, req, res, next) => {
     if (err) {
+        console.log(err);
+        if (res.statusCode === 200)
+            res.status(500);
         res.statusMessage = err.message || "Undefined status message";
         res.send(err.message);
     }

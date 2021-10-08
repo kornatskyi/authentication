@@ -7,6 +7,7 @@ declare module "express-session" {
 }
 
 export const authorize = (req: Request, res: Response, next: NextFunction) => {
+  console.log(req.session.user);
   if (req.session.user) {
     const sessionUser = req.session.user;
     User.findByEmail(sessionUser.email, (err: Error, result: any) => {

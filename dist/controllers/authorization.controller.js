@@ -5,27 +5,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authorize = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
-const authorize = (req, res) => {
+const authorize = (req, res, next) => {
     if (req.session.user) {
         const sessionUser = req.session.user;
         user_model_1.default.findByEmail(sessionUser.email, (err, result) => {
-            var _a, _b;
             // check errors from db
+            var _a, _b;
             if (err) {
                 if (err.message === "not_found") {
-                    res.status(404).send({
-                        message: `Not found User with email ${sessionUser.email}.`,
-                    });
+                    res.status(404);
+                    next(new Error(`Not found User with email ${sessionUser.email}.`));
                 }
                 else {
-                    res.status(500).send({
-                        message: "Error retrieving User with email " + sessionUser.email,
-                    });
+                    res.status(500);
+                    next(new Error("Error retrieving User with email " + sessionUser.email));
                 }
                 //check password
             }
             else if (sessionUser.password !== result.password) {
-                res.send("Incorrect session user password!!!");
+                res.status(401);
+                next(new Error("Incorrect session user password!!!"));
             }
             else {
                 res.status(200);
@@ -39,7 +38,7 @@ const authorize = (req, res) => {
     }
     else {
         res.status(401);
-        res.send("Not authorized");
+        next(new Error("Not authorized"));
     }
 };
 exports.authorize = authorize;
