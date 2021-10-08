@@ -76,7 +76,9 @@ deleteUserRoutes(app);
 
 const errorHandler = (err: Error, req: Request, res: Response, next: any) => {
   if (err) {
+    if (res.statusCode === 200) res.status(500);
     res.statusMessage = err.message || "Undefined status message";
+
     res.send(err.message);
   } else {
     res.send("Hello");
