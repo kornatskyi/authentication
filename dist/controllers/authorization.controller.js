@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authorize = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const authorize = (req, res, next) => {
+
     if (req.session.user) {
         const sessionUser = req.session.user;
         user_model_1.default.findByEmail(sessionUser.email, (err, result) => {
