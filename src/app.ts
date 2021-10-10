@@ -20,22 +20,23 @@ import userRoutes from "./routes/user.routes";
 import updateCredentialsRoutes from "./routes/updateCredentials.routes";
 import deleteUserRoutes from "./routes/deleteUser.routes";
 
-var sessionStore = new MySQLStore(
-  {
-    clearExpired: true,
-    checkExpirationInterval: 90000,
-  } /* session store options */,
-  connection
-);
+var options = {
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER_NAME,
+  password: process.env.DB_USER_PASSWORD,
+  database: process.env.DB_DATABASE,
+  clearExpired: true,
+  checkExpirationInterval: 90000,
+};
 
-console.log("hello session store");
-console.log(sessionStore);
+var sessionStore = new MySQLStore(options);
 
 const app = express();
 
 // /* ----- Middleware ----- */
 app.use(cors(corsOptions));
-// // app.use(cookieParser());
+// app.use(cookieParser());
 app.use(
   bodyParser.urlencoded({
     extended: false,
