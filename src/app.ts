@@ -28,6 +28,9 @@ var sessionStore = new MySQLStore(
   connection
 );
 
+console.log("hello session store");
+console.log(sessionStore);
+
 const app = express();
 
 // /* ----- Middleware ----- */
