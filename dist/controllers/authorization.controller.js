@@ -3,10 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authorize = void 0;
+exports.userInfo = exports.authorize = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const authorize = (req, res, next) => {
-
     if (req.session.user) {
         const sessionUser = req.session.user;
         user_model_1.default.findByEmail(sessionUser.email, (err, result) => {
@@ -43,3 +42,16 @@ const authorize = (req, res, next) => {
     }
 };
 exports.authorize = authorize;
+const userInfo = (req, res, next) => {
+    if (req.session.user) {
+        res.status(200);
+        res.send({
+            email: req.session.user.email,
+            name: req.session.user.name,
+        });
+    }
+    else {
+        next(new Error("User session doesn't exist!"));
+    }
+};
+exports.userInfo = userInfo;

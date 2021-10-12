@@ -21,6 +21,7 @@ const updateCredentials = (req, res, next) => {
             ? bcryptjs_1.default.hashSync(req.body.password, 14)
             : req.session.user.password,
     ];
+    req.session.user = { email: newEmail, name: newName, password: newPassword };
     const userWithNewCredentials = new user_model_1.default(newEmail, newName, newPassword);
     user_model_1.default.updateByEmail(req.session.user.email, userWithNewCredentials, (err, data) => {
         if (err) {

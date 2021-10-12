@@ -8,4 +8,14 @@ const connection = mysql.createPool({
     password: process.env.DB_USER_PASSWORD,
     database: process.env.DB_DATABASE,
 });
+// console.log("🚀 ~ connection", connection);
+// var getConnection = function (callback: any) {
+//   connection.getConnection(function (err: any, connection: any) {
+//     console.log(connection);
+//     callback(err, connection);
+//   });
+// };
+// getConnection((err: any, connection: any) => {
+//   console.log(connection);
+// });
 exports.default = connection;

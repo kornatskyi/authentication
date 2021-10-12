@@ -18,18 +18,23 @@ const cors_config_1 = __importDefault(require("./config/cors.config"));
 const signOut_routes_1 = __importDefault(require("./routes/signOut.routes"));
 const emailConfirmation_routes_1 = __importDefault(require("./routes/emailConfirmation.routes"));
 const resetPassword_routes_1 = __importDefault(require("./routes/resetPassword.routes"));
-const db_1 = __importDefault(require("./models/db"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const updateCredentials_routes_1 = __importDefault(require("./routes/updateCredentials.routes"));
 const deleteUser_routes_1 = __importDefault(require("./routes/deleteUser.routes"));
-var sessionStore = new MySQLStore({
+var options = {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER_NAME,
+    password: process.env.DB_USER_PASSWORD,
+    database: process.env.DB_DATABASE,
     clearExpired: true,
     checkExpirationInterval: 90000,
-} /* session store options */, db_1.default);
+};
+var sessionStore = new MySQLStore(options);
 const app = express();
 // /* ----- Middleware ----- */
 app.use(cors(cors_config_1.default));
-// // app.use(cookieParser());
+// app.use(cookieParser());
 app.use(bodyParser.urlencoded({
     extended: false,
 }));

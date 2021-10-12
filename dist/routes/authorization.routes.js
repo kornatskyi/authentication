@@ -22,4 +22,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const authorized = __importStar(require("../controllers/authorization.controller"));
 exports.default = (app) => {
     app.get("/authorize", authorized.authorize);
+    app.get("/user-info", authorized.userInfo);
 };
