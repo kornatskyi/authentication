@@ -20,6 +20,8 @@ export const updateCredentials = (req: any, res: any, next: NextFunction) => {
       : req.session.user.password,
   ];
 
+  req.session.user = { email: newEmail, name: newName, password: newPassword };
+
   const userWithNewCredentials = new User(newEmail, newName, newPassword);
 
   User.updateByEmail(

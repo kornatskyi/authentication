@@ -7,8 +7,6 @@ declare module "express-session" {
 }
 
 export const authorize = (req: Request, res: Response, next: NextFunction) => {
-  console.log("🚀 ~ req.session", req.session);
-
   if (req.session.user) {
     const sessionUser = req.session.user;
     User.findByEmail(sessionUser.email, (err: Error, result: any) => {
@@ -40,5 +38,17 @@ export const authorize = (req: Request, res: Response, next: NextFunction) => {
   } else {
     res.status(401);
     next(new Error("Not authorized"));
+  }
+};
+
+export const userInfo = (req: Request, res: Response, next: NextFunction) => {
+  if (req.session.user) {
+    res.status(200);
+    res.send({
+      email: req.session.user.email,
+      name: req.session.user.name,
+    });
+  } else {
+    next(new Error("User session doesn't exist!"));
   }
 };
