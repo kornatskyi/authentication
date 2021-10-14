@@ -5,7 +5,7 @@ const session = require("express-session");
 const cors = require("cors");
 // const cookieParser = require("cookie-parser");
 const helmet = require("helmet"); //middleware that manages http header security
-const csurf = require("csurf"); //figure it out latter
+// const csurf = require("csurf"); //figure it out latter
 const MySQLStore = require("express-mysql-session")(session);
 
 import { Request, Response } from "express";
@@ -15,7 +15,6 @@ import corsOptions from "./config/cors.config";
 import signOutRoutes from "./routes/signOut.routes";
 import emailConfirmationRoutes from "./routes/emailConfirmation.routes";
 import resetPasswordRoutes from "./routes/resetPassword.routes";
-import connection from "./models/db";
 import userRoutes from "./routes/user.routes";
 import updateCredentialsRoutes from "./routes/updateCredentials.routes";
 import deleteUserRoutes from "./routes/deleteUser.routes";
@@ -62,7 +61,7 @@ app.use(
 );
 
 app.use(helmet()); //manage http header security
-app.use(csurf());
+// app.use(csurf());
 /* ----- End of a middleware ----- */
 
 // define a route handler for the default home page
