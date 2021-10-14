@@ -30,10 +30,12 @@ var options = {
   checkExpirationInterval: 90000,
 };
 
-var sessionStore = new MySQLStore(options);
-
 const app = express();
 
+//Cros-cookie settings
+app.set("trust proxy", 1);
+
+var sessionStore = new MySQLStore(options);
 // /* ----- Middleware ----- */
 app.use(cors(corsOptions));
 // app.use(cookieParser());
@@ -52,6 +54,10 @@ app.use(
     httpOnly: true, // don't Let JS code access cookies
     secure: true, // only set cookies over http
     store: sessionStore,
+    cookie: {
+      sameSite: "none",
+      secure: true, // must be true if sameSite='none'
+    },
   })
 );
 // app.use(csurf());
