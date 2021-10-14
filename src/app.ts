@@ -62,14 +62,7 @@ app.use(
 );
 
 app.use(helmet()); //manage http header security
-app.use(
-  csurf({
-    cookie: {
-      httpOnly: true,
-      secure: true,
-    },
-  })
-);
+app.use(csurf());
 /* ----- End of a middleware ----- */
 
 // define a route handler for the default home page
