@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const cors = require("cors");
-// const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 const helmet = require("helmet"); //middleware that manages http header security
 const csurf = require("csurf"); //figure it out latter
 const MySQLStore = require("express-mysql-session")(session);
@@ -38,7 +38,7 @@ app.set("trust proxy", 1);
 var sessionStore = new MySQLStore(options);
 // /* ----- Middleware ----- */
 app.use(cors(corsOptions));
-// app.use(cookieParser());
+app.use(cookieParser());
 app.use(
   bodyParser.urlencoded({
     extended: false,
@@ -60,6 +60,8 @@ app.use(
     },
   })
 );
+
+app.use(helmet()); //manage http header security
 app.use(
   csurf({
     cookie: {
@@ -68,7 +70,6 @@ app.use(
     },
   })
 );
-app.use(helmet()); //manage http header security
 /* ----- End of a middleware ----- */
 
 // define a route handler for the default home page
