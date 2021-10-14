@@ -60,7 +60,14 @@ app.use(
     },
   })
 );
-// app.use(csurf());
+app.use(
+  csurf({
+    cookie: {
+      httpOnly: true,
+      secure: true,
+    },
+  })
+);
 app.use(helmet()); //manage http header security
 /* ----- End of a middleware ----- */
 
